@@ -1,12 +1,12 @@
-class Vehicle:
-    def fare(self):
-        return 50 * 100
+class Reverse:
+    def __init__(self, s=""):
+        self.s = s
+
+    def reverse_string(self):
+        return self.s[::-1]
 
 
-class Bus(Vehicle):
-    def fare(self):
-        return super().fare() * 1.10
+word = input("Enter a word: ")
 
-
-bus = Bus()
-print(bus.fare())
+obj = Reverse(word)
+print(obj.reverse_string())
