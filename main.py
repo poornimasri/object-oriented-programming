@@ -1,12 +1,25 @@
-class Reverse:
-    def __init__(self, s=""):
-        self.s = s
+class BMW:
+    def fuel_type(self):
+        print("BMW Fuel Type: Petrol")
 
-    def reverse_string(self):
-        return self.s[::-1]
+    def max_speed(self):
+        print("BMW Max Speed: 250 km/h")
 
 
-word = input("Enter a word: ")
+class Ferrari:
+    def fuel_type(self):
+        print("Ferrari Fuel Type: Petrol")
 
-obj = Reverse(word)
-print(obj.reverse_string())
+    def max_speed(self):
+        print("Ferrari Max Speed: 340 km/h")
+
+def car_details(car):
+    car.fuel_type()
+    car.max_speed()
+    print()
+
+bmw = BMW()
+ferrari = Ferrari()
+
+car_details(bmw)
+car_details(ferrari)
