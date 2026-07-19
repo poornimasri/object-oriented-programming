@@ -1,12 +1,22 @@
-class Reverse:
-    def __init__(self, s=""):
-        self.s = s
+class RomanNumeral:
+    def int_to_roman(self, num):
+        values = [1000, 900, 500, 400, 100, 90, 50, 40,
+                  10, 9, 5, 4, 1]
+        symbols = ["M", "CM", "D", "CD", "C", "XC", "L", "XL",
+                   "X", "IX", "V", "IV", "I"]
 
-    def reverse_string(self):
-        return self.s[::-1]
+        roman = ""
 
-word = input("Enter a string: ")
+        for i in range(len(values)):
+            while num >= values[i]:
+                roman += symbols[i]
+                num -= values[i]
 
-obj = Reverse(word)
+        return roman
 
-print("Reversed string:", obj.reverse_string())
+
+number = int(input("Enter an integer: "))
+
+obj = RomanNumeral()
+
+print("Roman Numeral:", obj.int_to_roman(number))
