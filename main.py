@@ -1,22 +1,38 @@
-class RomanNumeral:
-    def int_to_roman(self, num):
-        values = [1000, 900, 500, 400, 100, 90, 50, 40,
-                  10, 9, 5, 4, 1]
-        symbols = ["M", "CM", "D", "CD", "C", "XC", "L", "XL",
-                   "X", "IX", "V", "IV", "I"]
+# PART 1: Create the parent class with shared vehicle details
+class Vehicle:
+    def __init__(self, brand, max_speed):
+        self.brand = brand
+        self.max_speed = max_speed
 
-        roman = ""
+    def show_details(self):
+        print("Brand:", self.brand)
+        print("Max Speed:", self.max_speed, "km/h")
 
-        for i in range(len(values)):
-            while num >= values[i]:
-                roman += symbols[i]
-                num -= values[i]
+# PART 2: Create the child class that inherits from Vehicle
+class Car(Vehicle):
 
-        return roman
+    # PART 3: Give Car its own details, plus the inherited vehicle details
+    def __init__(self, model, seats, brand, max_speed):
+        self.model = model
+        self.seats = seats
+        super().__init__(brand, max_speed)
 
+    # PART 4: Override show_details to add the car's own details too
+    def show_details(self):
+        print("Model:", self.model)
+        print("Seats:", self.seats)
+        super().show_details()
 
-number = int(input("Enter an integer: "))
+    # PART 5: Add a brand new method that only Car has
+    def fuel_type(self, fuel):
+        print(self.model, "uses", fuel)
 
-obj = RomanNumeral()
+# PART 6: Create a Car object with real vehicle values
+my_car = Car("City Rider", 5, "Honda", 180)
 
-print("Roman Numeral:", obj.int_to_roman(number))
+# PART 7: Call the overridden method and the new method
+my_car.show_details()
+my_car.fuel_type("petrol")
+
+# PART 8: Check whether Car is really a subclass of Vehicle
+print("Is Car a subclass of Vehicle?", issubclass(Car, Vehicle))
