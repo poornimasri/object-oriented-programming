@@ -1,42 +1,56 @@
-class Account:
+class Book:
 
-    def __init__(self, owner, pin):
-        self.owner = owner
-        self.__pin = pin
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+        self.is_borrowed = False
 
-    def show_pin_status(self):
-        print("Account Owner:", self.owner)
-        print("PIN is safely stored inside the class.")
-
-    def set_pin(self, new_pin):
-        if len(new_pin) == 4 and new_pin.isdigit():
-            self.__pin = new_pin
-            print("PIN updated successfully.")
+    def borrow(self):
+        if self.is_borrowed:
+            print(self.title, "is already borrowed.")
         else:
-            print("Invalid PIN. PIN must be exactly 4 digits.")
+            self.is_borrowed = True
+            print(self.title, "has been borrowed.")
 
-    def check_pin(self, entered_pin):
-        if entered_pin == self.__pin:
-            print("Access granted.")
+    def return_book(self):
+        if not self.is_borrowed:
+            print(self.title, "was not borrowed.")
         else:
-            print("Access denied.")
+            self.is_borrowed = False
+            print(self.title, "has been returned.")
 
     def __str__(self):
-        return "Account holder: " + self.owner
+        if self.is_borrowed:
+            status = "Borrowed"
+        else:
+            status = "Available"
+        return self.title + " by " + self.author + " [" + status + "]"
 
 
-my_account = Account("Riya", "1234")
+book1 = Book("Python Crash Course", "Eric Matthes")
+book2 = Book("Harry Potter", "J.K. Rowling")
+book3 = Book("The Hobbit", "J.R.R. Tolkien")
 
-print(my_account)
+print("=" * 42)
+print("         📚  LIBRARY SYSTEM")
+print("=" * 42)
 
-my_account.show_pin_status()
+print(book1)
+print(book2)
+print(book3)
 
-my_account.__pin = "9999"
-print("Tried changing PIN directly from outside.")
+book1.borrow()
+book1.borrow()
 
-my_account.check_pin("9999")
-my_account.check_pin("1234")
+book2.borrow()
 
-my_account.set_pin("9999")
+book1.return_book()
+book3.return_book()
 
-my_account.check_pin("9999")
+print("=" * 42)
+print("         UPDATED LIBRARY")
+print("=" * 42)
+
+print(book1)
+print(book2)
+print(book3)
