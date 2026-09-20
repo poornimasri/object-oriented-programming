@@ -1,160 +1,60 @@
+from abc import ABC, abstractmethod
 
-import pygame
-import random
+class SmartDevice(ABC):
 
-pygame.init()
- 
+    def show_device(self, name):
+        print("Device Name:", name)
 
-CAR_COLOR_CHANGE_EVENT = pygame.USEREVENT + 1
-SIGNAL_CHANGE_EVENT = pygame.USEREVENT + 2
- 
+    @abstractmethod
+    def turn_on(self):
+        pass
 
-ROAD = pygame.Color("darkgray")
-WHITE = pygame.Color("white")
-YELLOW = pygame.Color("yellow")
-BLUE = pygame.Color("blue")
-ORANGE = pygame.Color("orange")
- 
-RED = pygame.Color("red")
-GREEN = pygame.Color("green")
- 
 
-class Car(pygame.sprite.Sprite):
- 
-   
-    def __init__(self, color, width, height):
-       
-        super().__init__()
- 
-     
-        self.image = pygame.Surface([width, height])
-        self.image.fill(color)
- 
-    
-        self.rect = self.image.get_rect()
- 
-       
-        self.velocity = [3, 0]
- 
-  
-    def update(self):
-        
-        self.rect.move_ip(self.velocity)
- 
-        sensor_triggered = False
- 
-      
-        if self.rect.left <= 0 or self.rect.right >= 600:
-            
-            self.velocity[0] = -self.velocity[0]
- 
-            sensor_triggered = True
- 
-       
-        if sensor_triggered:
-            pygame.event.post(
-                pygame.event.Event(CAR_COLOR_CHANGE_EVENT)
-            )
- 
-            pygame.event.post(
-                pygame.event.Event(SIGNAL_CHANGE_EVENT)
-            )
- 
+class SmartLight(SmartDevice):
+    def turn_on(self):
+        print("Smart Light is now ON")
 
-    def change_color(self):
-        self.image.fill(
-            random.choice([WHITE, YELLOW, BLUE, ORANGE])
-        )
- 
- 
 
-def change_signal():
-    global signal_color
- 
-   
-    if signal_color == RED:
-        signal_color = GREEN
-    else:
-        signal_color = RED
- 
- 
+class SmartFan(SmartDevice):
+    def turn_on(self):
+        print("Smart Fan is now ON")
 
-all_sprites = pygame.sprite.Group()
- 
 
-car = Car(WHITE, 70, 35)
- 
+class SmartSpeaker(SmartDevice):
+    def turn_on(self):
+        print("Smart Speaker is now ON")
 
-car.rect.x = 50
-car.rect.y = 300
- 
 
-all_sprites.add(car)
- 
+light = SmartLight()
+fan = SmartFan()
+speaker = SmartSpeaker()
 
-screen = pygame.display.set_mode((600, 400))
-pygame.display.set_caption("Smart Traffic Signal Simulator")
- 
+light.show_device("Living Room Light")
+light.turn_on()
 
-signal_color = RED
+fan.show_device("Bedroom Fan")
+fan.turn_on()
 
-clock = pygame.time.Clock()
- 
+speaker.show_device("Music Speaker")
+speaker.turn_on()
 
-running = True
- 
-while running:
- 
 
-    for event in pygame.event.get():
- 
-   
-        if event.type == pygame.QUIT:
-            running = False
- 
-    
-        elif event.type == CAR_COLOR_CHANGE_EVENT:
-            car.change_color()
- 
-      
-        elif event.type == SIGNAL_CHANGE_EVENT:
-            change_signal()
- 
-   
-    all_sprites.update()
- 
-    
-    screen.fill(ROAD)
- 
-   
-    for x in range(0, 600, 80):
-        pygame.draw.rect(
-            screen,
-            WHITE,
-            (x, 345, 45, 5)
-        )
- 
+class SecurityCamera:
+    def check_status(self):
+        print("Security Camera is recording")
 
-    pygame.draw.rect(
-        screen,
-        pygame.Color("black"),
-        (275, 40, 50, 90)
-    )
- 
-  
-    pygame.draw.circle(
-        screen,
-        signal_color,
-        (300, 85),
-        20
-    )
- 
-    all_sprites.draw(screen)
- 
-    pygame.display.flip()
- 
-  
-    clock.tick(60)
- 
 
-pygame.quit()
+class DoorLock:
+    def check_status(self):
+        print("Door Lock is secure")
+
+
+devices = [SecurityCamera(), DoorLock()]
+
+print("")
+print("===== SMART DEVICE STATUS =====")
+
+for device in devices:
+    device.check_status()
+
+print("===============================")
