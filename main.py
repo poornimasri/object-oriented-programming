@@ -1,60 +1,42 @@
-from abc import ABC, abstractmethod
+class Account:
 
-class SmartDevice(ABC):
+    def __init__(self, owner, pin):
+        self.owner = owner
+        self.__pin = pin
 
-    def show_device(self, name):
-        print("Device Name:", name)
+    def show_pin_status(self):
+        print("Account Owner:", self.owner)
+        print("PIN is safely stored inside the class.")
 
-    @abstractmethod
-    def turn_on(self):
-        pass
+    def set_pin(self, new_pin):
+        if len(new_pin) == 4 and new_pin.isdigit():
+            self.__pin = new_pin
+            print("PIN updated successfully.")
+        else:
+            print("Invalid PIN. PIN must be exactly 4 digits.")
 
+    def check_pin(self, entered_pin):
+        if entered_pin == self.__pin:
+            print("Access granted.")
+        else:
+            print("Access denied.")
 
-class SmartLight(SmartDevice):
-    def turn_on(self):
-        print("Smart Light is now ON")
-
-
-class SmartFan(SmartDevice):
-    def turn_on(self):
-        print("Smart Fan is now ON")
-
-
-class SmartSpeaker(SmartDevice):
-    def turn_on(self):
-        print("Smart Speaker is now ON")
-
-
-light = SmartLight()
-fan = SmartFan()
-speaker = SmartSpeaker()
-
-light.show_device("Living Room Light")
-light.turn_on()
-
-fan.show_device("Bedroom Fan")
-fan.turn_on()
-
-speaker.show_device("Music Speaker")
-speaker.turn_on()
+    def __str__(self):
+        return "Account holder: " + self.owner
 
 
-class SecurityCamera:
-    def check_status(self):
-        print("Security Camera is recording")
+my_account = Account("Riya", "1234")
 
+print(my_account)
 
-class DoorLock:
-    def check_status(self):
-        print("Door Lock is secure")
+my_account.show_pin_status()
 
+my_account.__pin = "9999"
+print("Tried changing PIN directly from outside.")
 
-devices = [SecurityCamera(), DoorLock()]
+my_account.check_pin("9999")
+my_account.check_pin("1234")
 
-print("")
-print("===== SMART DEVICE STATUS =====")
+my_account.set_pin("9999")
 
-for device in devices:
-    device.check_status()
-
-print("===============================")
+my_account.check_pin("9999")
