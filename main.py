@@ -1,33 +1,61 @@
 
-class Vehicle:
-    def __init__(self, brand, max_speed):
-        self.brand = brand
-        self.max_speed = max_speed
+from abc import ABC, abstractmethod
 
-    def show_details(self):
-        print("Brand:", self.brand)
-        print("Max Speed:", self.max_speed, "km/h")
+class SmartDevice(ABC):
 
+    def show_device(self, name):
+        print("Device Name:", name)
 
-class Car(Vehicle):
-
-    def __init__(self, model, seats, brand, max_speed):
-        self.model = model
-        self.seats = seats
-        super().__init__(brand, max_speed)
-
-    def show_details(self):
-        print("Model:", self.model)
-        print("Seats:", self.seats)
-        super().show_details()
-
-    def fuel_type(self, fuel):
-        print(self.model, "uses", fuel)
+    @abstractmethod
+    def turn_on(self):
+        pass
 
 
-my_car = Car("City Rider", 5, "Honda", 180)
+class SmartLight(SmartDevice):
+    def turn_on(self):
+        print("Smart Light is now ON")
 
-my_car.show_details()
-my_car.fuel_type("petrol")
 
-print("Is Car a subclass of Vehicle?", issubclass(Car, Vehicle))
+class SmartFan(SmartDevice):
+    def turn_on(self):
+        print("Smart Fan is now ON")
+
+
+class SmartSpeaker(SmartDevice):
+    def turn_on(self):
+        print("Smart Speaker is now ON")
+
+
+light = SmartLight()
+fan = SmartFan()
+speaker = SmartSpeaker()
+
+light.show_device("Living Room Light")
+light.turn_on()
+
+fan.show_device("Bedroom Fan")
+fan.turn_on()
+
+speaker.show_device("Music Speaker")
+speaker.turn_on()
+
+
+class SecurityCamera:
+    def check_status(self):
+        print("Security Camera is recording")
+
+
+class DoorLock:
+    def check_status(self):
+        print("Door Lock is secure")
+
+
+devices = [SecurityCamera(), DoorLock()]
+
+print("")
+print("===== SMART DEVICE STATUS =====")
+
+for device in devices:
+    device.check_status()
+
+print("===============================")
