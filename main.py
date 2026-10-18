@@ -1,72 +1,55 @@
 
-import pygame
+from tkinter import *
+from datetime import date
 
-def main():
-    pygame.init()
+root = Tk()
+root.title("Workshop Participant Greeting")
+root.geometry("400x300")
 
-    screen_width, screen_height = 500, 400
-    screen = pygame.display.set_mode((screen_width, screen_height))
-    pygame.display.set_caption("Mini Sprite Adventure")
+heading = Label(
+    text="Workshop Welcome Desk",
+    fg="white",
+    bg="#072F5F",
+    height=1,
+    width=300
+)
 
-    x, y = 50, 50
-    sprite_width, sprite_height = 60, 60
-    speed = 4
+name_label = Label(
+    text="Participant Name",
+    bg="#3895D3"
+)
+name_entry = Entry()
 
-    BLACK = (0, 0, 0)
-    WHITE = (255, 255, 255)
-    BLUE = (0, 125, 255)
-    RED = (255, 0, 0)
-    GREEN = (0, 255, 0)
-    YELLOW = (255, 255, 0)
+def display_welcome():
+    name = name_entry.get()
 
-    current_color = WHITE
+    text_box.delete(1.0, END)
 
-    clock = pygame.time.Clock()
-    running = True
+    greeting = "Hello " + name + "!\n"
+    message = "Welcome to the workshop.\n"
+    workshop_date = "Date: " + str(date.today())
 
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    text_box.insert(END, greeting)
+    text_box.insert(END, message)
+    text_box.insert(END, workshop_date)
 
-        pressed = pygame.key.get_pressed()
+text_box = Text(
+    height=4,
+    width=40
+)
 
-        if pressed[pygame.K_LEFT]:
-            x -= speed
-        if pressed[pygame.K_RIGHT]:
-            x += speed
-        if pressed[pygame.K_UP]:
-            y -= speed
-        if pressed[pygame.K_DOWN]:
-            y += speed
+welcome_button = Button(
+    text="Check In",
+    command=display_welcome,
+    height=1,
+    bg="#1261A0",
+    fg="white"
+)
 
-        x = min(max(0, x), screen_width - sprite_width)
-        y = min(max(0, y), screen_height - sprite_height)
+heading.pack()
+name_label.pack(pady=10)
+name_entry.pack()
+welcome_button.pack(pady=10)
+text_box.pack()
 
-        if x == 0:
-            current_color = BLUE
-        elif x == screen_width - sprite_width:
-            current_color = YELLOW
-        elif y == 0:
-            current_color = RED
-        elif y == screen_height - sprite_height:
-            current_color = GREEN
-        else:
-            current_color = WHITE
-
-        screen.fill(BLACK)
-
-        pygame.draw.circle(screen, GREEN, (420, 320), 35)
-        pygame.draw.circle(screen, BLUE, (80, 320), 35, 4)
-
-        sprite_rect = pygame.Rect(x, y, sprite_width, sprite_height)
-        pygame.draw.rect(screen, current_color, sprite_rect)
-
-        pygame.display.flip()
-        clock.tick(60)
-
-    pygame.quit()
-
-
-if __name__ == "__main__":
-    main()
+root.mainloop()
