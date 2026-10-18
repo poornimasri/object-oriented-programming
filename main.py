@@ -1,128 +1,72 @@
 
-from tkinter import *
+import pygame
 
-root = Tk()
-root.title("ATM PIN Setup Interface")
-root.geometry("400x500")
+def main():
+    pygame.init()
 
-details_frame = Frame(
-    master=root,
-    height=150,
-    width=360,
-    bg="#d0efff"
-)
+    screen_width, screen_height = 500, 400
+    screen = pygame.display.set_mode((screen_width, screen_height))
+    pygame.display.set_caption("Mini Sprite Adventure")
 
-name_label = Label(
-    details_frame,
-    text="Account Name",
-    bg="#3895D3",
-    fg="white",
-    width=14
-)
+    x, y = 50, 50
+    sprite_width, sprite_height = 60, 60
+    speed = 4
 
-pin_label = Label(
-    details_frame,
-    text="Create PIN",
-    bg="#3895D3",
-    fg="white",
-    width=14
-)
+    BLACK = (0, 0, 0)
+    WHITE = (255, 255, 255)
+    BLUE = (0, 125, 255)
+    RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
+    YELLOW = (255, 255, 0)
 
-name_entry = Entry(details_frame)
+    current_color = WHITE
 
-pin_entry = Entry(details_frame, show="*")
+    clock = pygame.time.Clock()
+    running = True
 
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-def confirm_pin():
-    account_name = name_entry.get()
-    pin = pin_entry.get()
+        pressed = pygame.key.get_pressed()
 
-    message_box.delete(1.0, END)
+        if pressed[pygame.K_LEFT]:
+            x -= speed
+        if pressed[pygame.K_RIGHT]:
+            x += speed
+        if pressed[pygame.K_UP]:
+            y -= speed
+        if pressed[pygame.K_DOWN]:
+            y += speed
 
-    if account_name == "" or pin == "":
-        message_box.insert(
-            END,
-            "Please enter the account name and PIN."
-        )
-    else:
-        message = (
-            "Hello " + account_name +
-            "\nYour ATM PIN has been set successfully."
-        )
-        message_box.insert(END, message)
+        x = min(max(0, x), screen_width - sprite_width)
+        y = min(max(0, y), screen_height - sprite_height)
 
+        if x == 0:
+            current_color = BLUE
+        elif x == screen_width - sprite_width:
+            current_color = YELLOW
+        elif y == 0:
+            current_color = RED
+        elif y == screen_height - sprite_height:
+            current_color = GREEN
+        else:
+            current_color = WHITE
 
-keypad_frame = Frame(
-    master=root,
-    relief=SUNKEN,
-    borderwidth=2
-)
+        screen.fill(BLACK)
 
-numbers = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-    ["Clear", 0, "Enter"]
-]
+        pygame.draw.circle(screen, GREEN, (420, 320), 35)
+        pygame.draw.circle(screen, BLUE, (80, 320), 35, 4)
 
-for i in range(4):
-    keypad_frame.rowconfigure(i, weight=1, minsize=40)
+        sprite_rect = pygame.Rect(x, y, sprite_width, sprite_height)
+        pygame.draw.rect(screen, current_color, sprite_rect)
 
-    for j in range(3):
-        keypad_frame.columnconfigure(j, weight=1, minsize=70)
+        pygame.display.flip()
+        clock.tick(60)
 
-        cell = Frame(
-            master=keypad_frame,
-            relief=RAISED,
-            borderwidth=1
-        )
-
-        cell.grid(
-            row=i,
-            column=j,
-            sticky="nsew"
-        )
-
-        number_label = Label(
-            master=cell,
-            text=numbers[i][j],
-            bg="#d0efff"
-        )
-
-        number_label.pack(
-            padx=8,
-            pady=8
-        )
+    pygame.quit()
 
 
-confirm_button = Button(
-    root,
-    text="Set ATM PIN",
-    command=confirm_pin,
-    bg="red",
-    fg="white"
-)
-
-message_box = Text(
-    root,
-    height=5,
-    width=42,
-    bg="#BEBEBE",
-    fg="black"
-)
-
-details_frame.place(x=20, y=10)
-
-name_label.place(x=15, y=25)
-name_entry.place(x=155, y=25)
-
-pin_label.place(x=15, y=85)
-pin_entry.place(x=155, y=85)
-
-keypad_frame.place(x=85, y=180)
-
-confirm_button.place(x=145, y=370)
-
-message_box.place(x=25, y=410)
-
-root.mainloop()
+if __name__ == "__main__":
+    main()
