@@ -1,149 +1,68 @@
-# ATM PIN Setup Interface
+# Workshop Participant Greeting
 # Import necessary libraries
 from tkinter import *
+from datetime import date
  
-# Create Window
+# PART 1: Create the main window
 root = Tk()
-root.title("ATM PIN Setup Interface")
-root.geometry("400x500")
+root.title("Workshop Participant Greeting")
+root.geometry("400x300")
  
-# Create a frame to organize account details
-details_frame = Frame(
-    master=root,
-    height=150,
-    width=360,
-    bg="#d0efff"
+# PART 2: Create the heading label
+heading = Label(
+    text="Workshop Welcome Desk",
+    fg="white",
+    bg="#072F5F",
+    height=1,
+    width=300
 )
  
-# Add labels
+# PART 3: Create a label and Entry widget
 name_label = Label(
-    details_frame,
-    text="Account Name",
-    bg="#3895D3",
-    fg="white",
-    width=14
+    text="Participant Name",
+    bg="#3895D3"
 )
+name_entry = Entry()
  
-pin_label = Label(
-    details_frame,
-    text="Create PIN",
-    bg="#3895D3",
-    fg="white",
-    width=14
-)
- 
-# Create entry widgets
-name_entry = Entry(details_frame)
- 
-# show="*" hides the entered PIN
-pin_entry = Entry(details_frame, show="*")
- 
- 
-# Function to confirm the PIN setup
-def confirm_pin():
-    # Read input from the Entry widgets
-    account_name = name_entry.get()
-    pin = pin_entry.get()
+# PART 4: Create the display function
+def display_welcome():
+    # Read the participant's name from the Entry widget
+    name = name_entry.get()
  
     # Clear the previous message
-    message_box.delete(1.0, END)
+    text_box.delete(1.0, END)
  
-    # Check whether all details are entered
-    if account_name == "" or pin == "":
-        message_box.insert(
-            END,
-            "Please enter the account name and PIN."
-        )
-    else:
-        message = (
-            "Hello " + account_name +
-            "\nYour ATM PIN has been set successfully."
-        )
-        message_box.insert(END, message)
+    # Create the multi-line welcome message
+    greeting = "Hello " + name + "!\n"
+    message = "Welcome to the workshop.\n"
+    workshop_date = "Date: " + str(date.today())
  
+    # Insert the message into the Text widget
+    text_box.insert(END, greeting)
+    text_box.insert(END, message)
+    text_box.insert(END, workshop_date)
  
-# Create a frame for the number-pad cells
-keypad_frame = Frame(
-    master=root,
-    relief=SUNKEN,
-    borderwidth=2
+# PART 5: Create the Text widget
+text_box = Text(
+    height=4,
+    width=40
 )
  
-# Number-pad values
-numbers = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-    ["Clear", 0, "Enter"]
-]
- 
-# Build the number-pad grid
-for i in range(4):
-    keypad_frame.rowconfigure(i, weight=1, minsize=40)
- 
-    for j in range(3):
-        keypad_frame.columnconfigure(j, weight=1, minsize=70)
- 
-        # Create a bordered cell
-        cell = Frame(
-            master=keypad_frame,
-            relief=RAISED,
-            borderwidth=1
-        )
- 
-        cell.grid(
-            row=i,
-            column=j,
-            sticky="nsew"
-        )
- 
-        # Display the number inside the cell
-        number_label = Label(
-            master=cell,
-            text=numbers[i][j],
-            bg="#d0efff"
-        )
- 
-        number_label.pack(
-            padx=8,
-            pady=8
-        )
- 
- 
-# Create confirmation button
-confirm_button = Button(
-    root,
-    text="Set ATM PIN",
-    command=confirm_pin,
-    bg="red",
+# PART 6: Create the button and connect its command
+welcome_button = Button(
+    text="Check In",
+    command=display_welcome,
+    height=1,
+    bg="#1261A0",
     fg="white"
 )
  
-# Create text widget to display the result
-message_box = Text(
-    root,
-    height=5,
-    width=42,
-    bg="#BEBEBE",
-    fg="black"
-)
+# PART 7: Arrange the widgets
+heading.pack()
+name_label.pack(pady=10)
+name_entry.pack()
+welcome_button.pack(pady=10)
+text_box.pack()
  
-# Position widgets exactly using place()
-details_frame.place(x=20, y=10)
- 
-name_label.place(x=15, y=25)
-name_entry.place(x=155, y=25)
- 
-pin_label.place(x=15, y=85)
-pin_entry.place(x=155, y=85)
- 
-keypad_frame.place(x=85, y=180)
- 
-confirm_button.place(x=145, y=370)
- 
-message_box.place(x=25, y=410)
- 
-# Start the GUI event loop
+# PART 8: Start the Tkinter event loop
 root.mainloop()
-
-           
