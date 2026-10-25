@@ -1,68 +1,80 @@
-# Workshop Participant Greeting
-# Import necessary libraries
+# After-School Routine Checker
+# Import the required packages
 from tkinter import *
-from datetime import date
+from tkinter import messagebox
  
 # PART 1: Create the main window
-root = Tk()
-root.title("Workshop Participant Greeting")
-root.geometry("400x300")
+window = Tk()
+window.title("After-School Routine Checker")
+window.geometry("400x320")
  
-# PART 2: Create the heading label
+# PART 2: Add the heading and instructions
 heading = Label(
-    text="Workshop Welcome Desk",
-    fg="white",
-    bg="#072F5F",
-    height=1,
-    width=300
+    window,
+    text="My After-School Routine",
+    font=("Arial", 16, "bold")
 )
+heading.pack(pady=10)
  
-# PART 3: Create a label and Entry widget
-name_label = Label(
-    text="Participant Name",
-    bg="#3895D3"
+instruction = Label(
+    window,
+    text="Enter your next after-school task:"
 )
-name_entry = Entry()
+instruction.pack()
  
-# PART 4: Create the display function
-def display_welcome():
-    # Read the participant's name from the Entry widget
-    name = name_entry.get()
+# PART 3: Create the task entry box
+task_entry = Entry(window, width=35)
+task_entry.pack(pady=8)
  
-    # Clear the previous message
-    text_box.delete(1.0, END)
+# Label used to display the last key pressed
+key_label = Label(window, text="Last key pressed: None")
+key_label.pack(pady=5)
  
-    # Create the multi-line welcome message
-    greeting = "Hello " + name + "!\n"
-    message = "Welcome to the workshop.\n"
-    workshop_date = "Date: " + str(date.today())
+# PART 4: Handle a keypress event
+def handle_keypress(event):
+    """Display the character associated with the key pressed."""
+    key_label.config(text="Last key pressed: " + event.char)
  
-    # Insert the message into the Text widget
-    text_box.insert(END, greeting)
-    text_box.insert(END, message)
-    text_box.insert(END, workshop_date)
+# Bind keypress events to the Entry widget
+task_entry.bind("<Key>", handle_keypress)
  
-# PART 5: Create the Text widget
-text_box = Text(
-    height=4,
-    width=40
+# PART 5: Handle a mouse-click event
+def handle_click(event):
+    """Update the message when the routine area is clicked."""
+    routine_message.config(text="Routine area selected!")
+ 
+routine_message = Label(
+    window,
+    text="Click here to check your routine",
+    bg="#d0efff",
+    width=32,
+    height=3
 )
+routine_message.pack(pady=10)
  
-# PART 6: Create the button and connect its command
-welcome_button = Button(
-    text="Check In",
-    command=display_welcome,
-    height=1,
-    bg="#1261A0",
-    fg="white"
+# Bind the left mouse button to the event handler
+routine_message.bind("<Button-1>", handle_click)
+ 
+# PART 6: Check the entered routine task
+def check_routine():
+    """Display the task or show a warning when it is missing."""
+    task = task_entry.get()
+ 
+    if task == "":
+        messagebox.showwarning(
+            "Missing Task",
+            "Please enter an after-school task."
+        )
+    else:
+        routine_message.config(text="Next task: " + task)
+ 
+# PART 7: Connect the button command to the function
+check_button = Button(
+    window,
+    text="Check My Routine",
+    command=check_routine
 )
+check_button.pack(pady=10)
  
-# PART 7: Arrange the widgets
-heading.pack()
-name_label.pack(pady=10)
-name_entry.pack()
-welcome_button.pack(pady=10)
-text_box.pack()
- 
-# PART 8: Start the Tkinter event loop
-root.mainloop()
+# Start the Tkinter event loop
+window.mainloop()
